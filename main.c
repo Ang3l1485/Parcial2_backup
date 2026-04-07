@@ -6,6 +6,7 @@
 
 #include "smart_copy.h"
 #include "backup.h"
+#include "Benchmark.h"   
 
 /*
  * Muestra el mensaje de ayuda del programa.
@@ -63,6 +64,7 @@ int main(int argc, char *argv[]) {
                 return EXIT_FAILURE;
             }
             printf("--- Respaldo completado ---\n");
+
         } else if (S_ISREG(st.st_mode)) {
             /* Es un archivo regular: usar sys_smart_copy */
             printf("--- Iniciando respaldo del archivo '%s' en '%s' ---\n", src, dest);
@@ -71,10 +73,23 @@ int main(int argc, char *argv[]) {
             if (rc == SMART_COPY_OK) {
                 printf("[OK] Archivo respaldado: %s -> %s\n", src, dest);
                 printf("--- Respaldo completado ---\n");
+
+                // -------------------------------
+                // BENCHMARK
+                // -------------------------------
+                printf("\n--- Ejecutando benchmark ---\n");
+
+                ejecutar_benchmark(
+                    src,
+                    "bench_stdio.dat",
+                    "bench_sys.dat"
+                );
+
             } else {
                 fprintf(stderr, "Error en sys_smart_copy (%d). errno=%d (%s)\n", rc, errno, strerror(errno));
                 return EXIT_FAILURE;
             }
+
         } else {
             fprintf(stderr, "Error: El origen no es valido. Debe ser archivo regular o directorio.\n");
             return EXIT_FAILURE;
