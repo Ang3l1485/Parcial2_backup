@@ -139,20 +139,6 @@ Segun el PDF de la rubrica, el proyecto pide principalmente:
 - El respaldo recursivo ahora soporta filtro por extension y modo completo.
 - `Makefile` y `run.sh` compilan tambien `Benchmark.c`, que antes no estaba integrado.
 
-### Lo que sigue siendo una entrega aparte
-
-- El archivo `reporte.pdf` todavia debe prepararse como documento de entrega.
-- Para apuntarle al maximo nivel de la rubrica en rendimiento, conviene ejecutar y documentar pruebas con archivos de al menos `1KB`, `1MB` y `1GB`, y luego incluir esa tabla comparativa en el reporte.
-
-## Archivos esperados para la entrega
-
-De acuerdo con la rubrica, la entrega deberia incluir como minimo:
-
-- `smart_copy.h`
-- `backup_engine.c`
-- `main.c`
-- `reporte.pdf`
-
 ## Limpieza
 
 ```bash
