@@ -122,16 +122,6 @@ Los resultados se guardan en consola y se generan dos archivos temporales:
 - `bench_stdio.dat`
 - `bench_sys.dat`
 
-## Revision frente a la rubrica
-
-Segun el PDF de la rubrica, el proyecto pide principalmente:
-
-1. Una funcion `sys_smart_copy` con manejo correcto de errores y buffer de 4KB.
-2. Comparativa entre enfoque syscall y `stdio`.
-3. Manejo de errores usando `errno`.
-4. Codigo limpio, modular y bien organizado.
-5. Un `reporte.pdf` con el analisis tecnico.
-
 ### Lo que ya queda mejor cubierto en el codigo
 
 - `sys_smart_copy` usa buffer de 4096 bytes.
