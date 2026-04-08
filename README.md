@@ -106,7 +106,18 @@ Con script:
 ```bash
 bash run.sh
 ```
-
+pruebas con archivos de diferentes tamaños:
+```
+dd if=/dev/zero of=test_1KB.dat bs=1 count=1024 && \
+dd if=/dev/zero of=test_1MB.dat bs=1M count=1 && \
+dd if=/dev/zero of=test_1GB.dat bs=1M count=1024
+```
+luego:
+```
+./programa -b test_1KB.dat copia_1KB.dat && \
+./programa -b test_1MB.dat copia_1MB.dat && \
+./programa -b test_1GB.dat copia_1GB.dat
+```
 Las pruebas cubren:
 
 - Copia de archivo simple.
