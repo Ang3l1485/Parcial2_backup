@@ -1,20 +1,58 @@
-﻿#include <stdio.h>
+#include <dirent.h>
+#include <errno.h>
+#include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/stat.h>
 #include <sys/types.h>
-#include <dirent.h>
-#include <errno.h>
 
-#include "smart_copy.h"
 #include "backup.h"
+#include "smart_copy.h"
+
+static const char *backup_basename(const char *path) {
+    const char *filename = path;
+    const char *slash = strrchr(path, '/');
+    const char *backslash = strrchr(path, '\\');
+    const char *last_separator = slash;
+
+    if (backslash != NULL && (last_separator == NULL || backslash > last_separator)) {
+        last_separator = backslash;
+    }
+
+    if (last_separator != NULL) {
+        filename = last_separator + 1;
+    }
+
+    return filename;
+}
+
+int backup_matches_extension(const char *path, const char *extension) {
+    const char *filename;
+    const char *dot;
+
+    if (path == NULL) {
+        return 0;
+    }
+
+    if (extension == NULL) {
+        return 1;
+    }
+
+    filename = backup_basename(path);
+    dot = strrchr(filename, '.');
+    if (dot == NULL) {
+        return 0;
+    }
+
+    return strcmp(dot, extension) == 0;
+}
 
 /*
  * Copia recursivamente un directorio y su contenido.
  * Los elementos especiales (links, dispositivos, etc.) se ignoran.
- * La función falla si cualquier operación crítica no se puede completar.
+ * La funcion falla si cualquier operacion critica no se puede completar.
  */
-int copy_directory(const char *src, const char *dest) {
+int copy_directory_filtered(const char *src, const char *dest, const char *extension) {
     struct stat st;
 
     if (stat(src, &st) == -1) {
@@ -58,12 +96,19 @@ int copy_directory(const char *src, const char *dest) {
         }
 
         if (S_ISDIR(next_st.st_mode)) {
-            if (copy_directory(next_src, next_dest) != EXIT_SUCCESS) {
+            if (copy_directory_filtered(next_src, next_dest, extension) != EXIT_SUCCESS) {
                 result = EXIT_FAILURE;
                 break;
             }
         } else if (S_ISREG(next_st.st_mode)) {
-            int rc = sys_smart_copy(next_src, next_dest);
+            int rc;
+
+            if (!backup_matches_extension(next_src, extension)) {
+                printf("[INFO] Archivo omitido por filtro: %s\n", next_src);
+                continue;
+            }
+
+            rc = sys_smart_copy(next_src, next_dest);
             if (rc == SMART_COPY_OK) {
                 printf("[OK] Archivo respaldado: %s -> %s\n", next_src, next_dest);
             } else {
@@ -88,4 +133,8 @@ int copy_directory(const char *src, const char *dest) {
     }
 
     return result;
+}
+
+int copy_directory(const char *src, const char *dest) {
+    return copy_directory_filtered(src, dest, NULL);
 }
