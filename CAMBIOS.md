@@ -28,16 +28,6 @@ Las pruebas ahora validan:
 - Integridad del contenido copiado.
 - Filtro por extension para copiar solo archivos `.c`.
 
-4. Documentacion alineada con la rubrica
-----------------------------------------
-
-Se actualizo la documentacion principal para reflejar:
-
-- Requisitos POSIX/Linux o WSL.
-- Uso del nuevo CLI.
-- Estado del proyecto frente a la rubrica del parcial.
-- Pendiente externo de entrega: `reporte.pdf`.
-
 5. Scripts coherentes
 ---------------------
 
