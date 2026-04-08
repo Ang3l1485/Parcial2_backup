@@ -1,3 +1,7 @@
+# Integrantes
+- Alejandro Cifuentes
+- Miguel Angel Ortiz
+- Julian Jimenez
 # Smart Backup Kernel-Space Utility
 
 Proyecto de parcial para Sistemas Operativos. El objetivo es implementar una copia de archivos con estilo syscall (`sys_smart_copy`) y compararla contra una version basada en `stdio`, manteniendo una interfaz de usuario clara para respaldar archivos y directorios.
